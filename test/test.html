@@ -10,12 +10,8 @@
     <meta name="author" content="Christian Winkler" />
         
     <script src="raphael.js" type="text/javascript"></script>
-    <script src="../lib/point.js" type="text/javascript"></script>
-    <script src="../lib/line.js" type="text/javascript"></script>
-    <script src="../lib/hexagon.js" type="text/javascript"></script>
-    <script src="../lib/country.js" type="text/javascript"></script>
-    <script src="../lib/map.js" type="text/javascript"></script>
-    <script src="../lib/mapgenerator.js" type="text/javascript"></script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <script src="../build/mapgenerator.js" type="text/javascript"></script>
     
     <link href='style.css' rel='stylesheet' type='text/css'>
 </head>
@@ -80,14 +76,19 @@
                     countrySizeVariance,
                     useCompactShapes
                 );
-                
+
                 var map = generator.getMap();
-                
-                for (var i = 0; i < map.regions.length; i++) {          
-                    paper.path(map.regions[i].pathString).attr("fill", Raphael.getColor(0.4));
+
+                for (var i = 0; i < map.regions.length; i++) {
+                    paper.path(map.regions[i].pathString).attr("fill", Raphael.getColor(0.4)).click(_.bind(function () {
+                        console.log(this);
+                    }, map.regions[i]));
                     
-                    if (showCentersAndConnection)
-                        paper.circle(map.regions[i].center.x, map.regions[i].center.y, 5).attr("fill", '#eeea10');
+                    if (showCentersAndConnection) {
+                        paper.circle(map.regions[i].center.x, map.regions[i].center.y, 8).attr("fill", '#eeea10');
+
+                        paper.text(map.regions[i].center.x, map.regions[i].center.y, String(i));
+                    }
                 }
                 
                 if (showCentersAndConnection) {
